@@ -1,5 +1,7 @@
 package org.zerock.persistence;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,12 +14,14 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-@ContextConfiguration(classes = {RootConfig.class})
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+//@ContextConfiguration(classes = {RootConfig.class})
 public class DataSourceTest {
 
     @Inject
     private DataSource dataSource;
+    @Inject
+    private SqlSessionFactory sqlSessionFactory;
 
     @Test
     public void testConnection() {
@@ -29,4 +33,17 @@ public class DataSourceTest {
         }
 
     }
+
+    @Test
+    public void testMyBatis() {
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            System.out.println(session);
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+
+    }
+
+
 }
