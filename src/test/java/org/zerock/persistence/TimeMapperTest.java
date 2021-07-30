@@ -9,8 +9,8 @@ import org.zerock.config.RootConfig;
 import org.zerock.mapper.TimeMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-@ContextConfiguration(classes = {RootConfig.class})
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+//@ContextConfiguration(classes = {RootConfig.class})
 public class TimeMapperTest {
 
     @Autowired

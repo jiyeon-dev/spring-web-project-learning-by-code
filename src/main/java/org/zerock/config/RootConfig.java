@@ -21,8 +21,8 @@ public class RootConfig {
 
         BasicDataSource dataSource = new BasicDataSource();
 
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/mydb?useSSL=false");
+        dataSource.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
+        dataSource.setUrl("jdbc:log4jdbc:mysql://localhost:3306/mydb?useSSL=false");
         dataSource.setUsername("root");
         dataSource.setPassword("admin");
 
