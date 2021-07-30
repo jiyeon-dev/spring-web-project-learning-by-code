@@ -8,4 +8,6 @@ public interface TimeMapper {
 
     @Select("SELECT SYSDATE()")
     public String getTime();
+
+    public String getTime2();
 }
