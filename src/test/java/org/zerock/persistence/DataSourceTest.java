@@ -14,8 +14,8 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-//@ContextConfiguration(classes = {RootConfig.class})
+//@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+@ContextConfiguration(classes = {RootConfig.class})
 public class DataSourceTest {
 
     @Inject
