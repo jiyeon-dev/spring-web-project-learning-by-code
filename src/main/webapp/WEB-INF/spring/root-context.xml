@@ -26,4 +26,6 @@
     <!-- mapper -->
     <mybatis-string:scan base-package="org.zerock.mapper"></mybatis-string:scan>
 
+    <context:component-scan base-package="org.zerock.service"></context:component-scan>
+
 </beans>
