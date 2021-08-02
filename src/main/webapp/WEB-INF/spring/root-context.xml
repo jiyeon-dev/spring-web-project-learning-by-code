@@ -23,4 +23,7 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
 
+    <!-- mapper -->
+    <mybatis-string:scan base-package="org.zerock.mapper"></mybatis-string:scan>
+
 </beans>
