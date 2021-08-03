@@ -22,13 +22,25 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                     <tr>
-                        <th>Rendering engine</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
+                        <th>#번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>수정일</th>
                     </tr>
                     </thead>
+
+                    <tbody>
+                    <c:forEach items="${list}" var="board">
+                        <tr>
+                            <td><c:out value="${board.no}" /></td>
+                            <td><c:out value="${board.title}" /></td>
+                            <td><c:out value="${board.writer}" /></td>
+                            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}" /></td>
+                            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}" /></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
 
                 </table>
             </div>
