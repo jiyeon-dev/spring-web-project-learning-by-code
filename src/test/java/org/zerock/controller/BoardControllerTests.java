@@ -1,6 +1,5 @@
 package org.zerock.controller;
 
-import lombok.Setter;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +42,21 @@ public class BoardControllerTests {
                         .getModelAndView()
                         .getModelMap()
         );
+    }
+
+    @Test
+    public void testRegister() throws Exception {
+
+        String resultPage = mockMvc.perform(
+                MockMvcRequestBuilders.post("/board/register")
+                .param("title", "테스트 새글 제목")
+                .param("content", "테스트 새글 내용")
+                .param("writer", "user00")
+        ).andReturn().getModelAndView().getViewName();
+
+        log.info(resultPage);
+
+
     }
 
 }
