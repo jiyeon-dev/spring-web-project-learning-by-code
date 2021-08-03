@@ -1,15 +1,22 @@
 package org.zerock.mapper;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
+import org.zerock.service.BoardServiceTests;
+
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 public class BoardMapperTests {
+
+    private static final Logger log = Logger.getLogger(BoardServiceTests.class);
 
     @Autowired
     private BoardMapper mapper;
@@ -17,6 +24,18 @@ public class BoardMapperTests {
     @Test
     public void testGetList() {
         System.out.println(mapper.getList());
+    }
+
+    @Test
+    public void testPaging() {
+        Criteria cri = new Criteria();
+
+        cri.setPageNum(2);
+        cri.setAmount(10);
+
+        List<BoardVO> list = mapper.getListWithPaging(cri);
+
+        list.forEach(board -> log.info(board));
     }
 
     @Test
