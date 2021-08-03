@@ -35,7 +35,11 @@
                     <c:forEach items="${list}" var="board">
                         <tr>
                             <td><c:out value="${board.no}" /></td>
-                            <td><c:out value="${board.title}" /></td>
+                            <td>
+                                <a href="/board/get?no=<c:out value='${board.no}' />">
+                                    <c:out value="${board.title}" />
+                                </a>
+                            </td>
                             <td><c:out value="${board.writer}" /></td>
                             <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}" /></td>
                             <td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}" /></td>
@@ -80,8 +84,10 @@
 
         checkModal(result);
 
+        history.replaceState({}, null, null);
+
         function checkModal(result) {
-            if (!result) return;
+            if (!result || history.state) return;
             if (parseInt(result) > 0) {
                 $(".modal-body").html("게시글 " + parseInt(result) + "번이 등록되었습니다.");
             }
