@@ -6,7 +6,7 @@
 <%@ include file="../includes/header.jsp" %>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Board Register</h1>
+        <h1 class="page-header">Board Read Page</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
