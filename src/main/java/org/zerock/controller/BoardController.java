@@ -60,7 +60,18 @@ public class BoardController {
         }
 
         return "redirect:/board/list";
-        
+
+    }
+
+    @PostMapping("/remove")
+    public String remove(@RequestParam("no") Long no, RedirectAttributes rttr) {
+
+        log.info("remove ... " + no);
+        if (service.remove(no)) {
+            rttr.addFlashAttribute("result", "success");
+        }
+        return "redirect:/board/list";
+
     }
 
 }

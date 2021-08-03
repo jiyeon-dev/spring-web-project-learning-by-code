@@ -81,5 +81,17 @@ public class BoardControllerTests {
                 ).andReturn().getModelAndView().getViewName();
     }
 
+    @Test
+    public void testRemove() throws Exception {
+
+        String resultPage = mockMvc
+                .perform(MockMvcRequestBuilders.post("/board/remove")
+                    .param("no", "6")
+                ).andReturn().getModelAndView().getViewName();
+
+        log.info(resultPage);
+
+    }
+
 }
 
