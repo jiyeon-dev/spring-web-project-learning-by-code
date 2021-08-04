@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
 <%@ include file="../includes/header.jsp" %>
@@ -20,6 +21,36 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
+
+                <!-- searchFrom -->
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <form id="searchForm" action="/board/list" method="get">
+                        <select name="type">
+                            <option value="" <c:out value="${pageMaker.cri.type == null ? 'selected' : '' }"/>>--</option>
+                            <c:set var="options" value="${fn:split('T,C,W,TC,TW,TCW', ',')}" />
+                            <c:forEach var="opt" items="${options}">
+                                <option value="${opt}" <c:out value="${pageMaker.cri.type == opt ? 'selected' : '' }"/>>
+                                    <c:choose>
+                                        <c:when test="${opt == 'T'.toString()}">제목</c:when>
+                                        <c:when test="${opt == 'C'.toString()}">내용</c:when>
+                                        <c:when test="${opt == 'W'.toString()}">작성자</c:when>
+                                        <c:when test="${opt == 'TC'.toString()}">제목+내용</c:when>
+                                        <c:when test="${opt == 'TW'.toString()}">제목+작성자</c:when>
+                                        <c:when test="${opt == 'TCW'.toString()}">제목+내용+작성자</c:when>
+                                    </c:choose>
+                                </option>
+                            </c:forEach>
+                        </select>
+                        <input type="text" name="keyword" value="<c:out value='${pageMaker.cri.keyword}'/>" />
+                        <input type="hidden" name="pageNum" value="<c:out value='${pageMaker.cri.pageNum}'/>" />
+                        <input type="hidden" name="amount" value="<c:out value='${pageMaker.cri.amount}'/>" />
+
+                        <button class="btn btn-default">search</button>
+                    </form>
+                </div>
+                <!-- ./searchForm -->
+
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                     <tr>
@@ -77,6 +108,8 @@
                 <form id="actionForm" action="/board/list" method="get">
                     <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}" />
                     <input type="hidden" name="amount" value="${pageMaker.cri.amount}" />
+                    <input type="hidden" name="type" value="<c:out value='${pageMaker.cri.type}'/>" />
+                    <input type="hidden" name="keyword" value="<c:out value='${pageMaker.cri.keyword}'/>" />
                 </form>
                 <!-- /.paging-form -->
 
@@ -148,5 +181,23 @@
             actionForm.attr("action", "/board/get");
             actionForm.submit();
         });
+
+        // 조건 검색
+        var searchForm = $("#searchForm");
+        $("#searchForm button").on("click", function (e) {
+            if (!searchForm.find("option:selected").val()) {
+                alert("검색 종류를 선택하세요.");
+                return false;
+            }
+            if (!searchForm.find("input[name='keyword']").val()) {
+                alert("키워드를 입력하세요.");
+                return false;
+            }
+
+            searchForm.find("input[name='pageNum']").val("1");  // 1page로 변경
+            e.preventDefault();
+            searchForm.submit();
+        })
+
     })
 </script>

@@ -42,8 +42,10 @@
 
                 <form id="operForm" action="/board/modify" method="get">
                     <input type="hidden" id="no" name="no" value="<c:out value='${board.no}' />" />
-                    <input type="hidden" id="pageNum" name="pageNum" value="<c:out value='${cri.pageNum}' />" />
-                    <input type="hidden" id="amount" name="amount" value="<c:out value='${cri.amount}' />" />
+                    <input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum}' />" />
+                    <input type="hidden" name="amount" value="<c:out value='${cri.amount}' />" />
+                    <input type="hidden" name="type" value="<c:out value='${cri.type}'/>" />
+                    <input type="hidden" name="keyword" value="<c:out value='${cri.keyword}'/>" />
                 </form>
 
             </div>
