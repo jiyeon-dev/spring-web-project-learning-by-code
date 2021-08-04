@@ -4,6 +4,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zerock.mapper.BoardMapper">
 
+    <!-- 공통 SQL 문 -->
+    <sql id="criteria">
+        <trim prefix="(" suffix=") AND" prefixOverrides="OR">
+            <foreach item="type" collection="typeArr">
+                <trim prefix="OR">
+                    <choose>
+                        <when test="type == 'T'.toString()">
+                            title LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="type == 'C'.toString()">
+                            content LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="type == 'W'.toString()">
+                            writer LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                    </choose>
+                </trim>
+            </foreach>
+        </trim>
+    </sql>
+
     <select id="getList" resultType="org.zerock.domain.BoardVO">
     <![CDATA[
         SELECT * FROM board WHERE no > 0;
@@ -11,17 +32,14 @@
     </select>
 
     <select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
-    <![CDATA[
         SELECT
             no, title, content, writer, regdate, updatedate
         FROM
-            (
-                SELECT /*+ INDEX_DESC(board pk_board) */
-                    no, title, content, writer, regdate, updatedate
-                FROM board
-            ) as T
+            board
+        <trim prefix="WHERE" suffixOverrides="AND">
+            <include refid="criteria"></include>
+        </trim>
         LIMIT #{pageStart}, #{pageEnd};
-    ]]>
     </select>
 
     <insert id="insert">
@@ -51,7 +69,10 @@
     </update>
 
     <select id="getTotalCount" resultType="int">
-        SELECT count(*) FROM board WHERE no > 0;
+        SELECT count(*) FROM board
+        WHERE
+            <include refid="criteria"></include>
+            no > 0
     </select>
 
 </mapper>

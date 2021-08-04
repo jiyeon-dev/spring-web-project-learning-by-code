@@ -2,8 +2,13 @@ package org.zerock.domain;
 
 public class Criteria {
 
+    // paging
     private int pageNum;
     private int amount;
+
+    // search
+    private String type;
+    private String keyword;
 
     public int getPageNum() {
         return pageNum;
@@ -19,6 +24,22 @@ public class Criteria {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     // Method for MyBatis SQL Mapper
@@ -38,6 +59,10 @@ public class Criteria {
     public Criteria(int pageNum, int amount) {
         this.pageNum = pageNum;
         this.amount = amount;
+    }
+
+    public String[] getTypeArr() {
+        return type == null ? new String[] {} : type.split("");
     }
 
     @Override

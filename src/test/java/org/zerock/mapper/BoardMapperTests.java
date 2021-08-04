@@ -88,11 +88,20 @@ public class BoardMapperTests {
 
     }
 
-
     @Test
     public void testGetTotalCount() {
         Criteria cri = new Criteria();
         System.out.println(mapper.getTotalCount(cri));
+    }
+
+    @Test
+    public void testSearch() {
+        Criteria cri = new Criteria();
+        cri.setKeyword("aa");
+        cri.setType("TC");
+
+        List<BoardVO> list = mapper.getListWithPaging(cri);
+        list.forEach(board -> System.out.println(board));
     }
 
 }
