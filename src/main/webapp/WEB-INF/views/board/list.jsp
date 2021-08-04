@@ -36,7 +36,7 @@
                         <tr>
                             <td><c:out value="${board.no}" /></td>
                             <td>
-                                <a href="/board/get?no=<c:out value='${board.no}' />">
+                                <a class="move" href="<c:out value='${board.no}' />">
                                     <c:out value="${board.title}" />
                                 </a>
                             </td>
@@ -137,6 +137,15 @@
             e.preventDefault();
 
             actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+            actionForm.submit();
+        });
+
+        // 게시물 조회
+        $(".move").on("click", function (e) {
+            e.preventDefault();
+
+            actionForm.append("<input type='hidden' name='no' value='" + $(this).attr("href") + "'>");
+            actionForm.attr("action", "/board/get");
             actionForm.submit();
         });
     })
