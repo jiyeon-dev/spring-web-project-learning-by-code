@@ -39,7 +39,7 @@
         <trim prefix="WHERE" suffixOverrides="AND">
             <include refid="criteria"></include>
         </trim>
-        LIMIT #{pageStart}, #{pageEnd};
+        LIMIT #{pageStart}, #{amount};
     </select>
 
     <insert id="insert">
