@@ -1,6 +1,7 @@
 package org.zerock.controller;
 
-import com.sun.istack.internal.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,7 @@ import org.zerock.service.BoardService;
 @RequestMapping("/board/*")
 public class BoardController {
 
-    private static final Logger log = Logger.getLogger(BoardController.class);
+    private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
     @Autowired
     private BoardService service;
