@@ -88,4 +88,11 @@ public class BoardMapperTests {
 
     }
 
+
+    @Test
+    public void testGetTotalCount() {
+        Criteria cri = new Criteria();
+        System.out.println(mapper.getTotalCount(cri));
+    }
+
 }

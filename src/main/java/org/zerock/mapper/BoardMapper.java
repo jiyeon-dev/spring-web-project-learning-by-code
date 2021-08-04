@@ -24,4 +24,7 @@ public interface BoardMapper {
 
     // UPDATE : Update
     public int update(BoardVO board);
+
+    // 전체 데이터 개수
+    public int getTotalCount(Criteria cri);
 }
