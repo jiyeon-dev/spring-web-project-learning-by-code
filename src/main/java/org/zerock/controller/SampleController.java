@@ -1,7 +1,5 @@
 package org.zerock.controller;
 
-import com.sun.istack.internal.logging.Logger;
-import org.apache.ibatis.javassist.tools.rmi.Sample;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +18,8 @@ import java.util.stream.IntStream;
 @RequestMapping("/sample")
 public class SampleController {
 
-    private static final Logger log = Logger.getLogger(SampleController.class);
-
     @GetMapping(value = "/getText", produces = "text/plain; charset=UTF-8")
     public String getText() {
-        log.info("MIME TYPE: " + MediaType.TEXT_PLAIN_VALUE);
         return "안녕하세요";
     }
 
