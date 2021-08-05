@@ -29,4 +29,10 @@
         ORDER BY rno ASC;
     </select>
 
+    <select id="getListWithPagingUsingHashMap" parameterType="hashmap" resultType="org.zerock.domain.ReplyVO">
+        SELECT * FROM reply
+        WHERE bno = #{bno}
+        ORDER BY rno ASC;
+    </select>
+
 </mapper>

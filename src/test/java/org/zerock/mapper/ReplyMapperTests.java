@@ -10,6 +10,7 @@ import org.zerock.domain.Criteria;
 import org.zerock.domain.ReplyVO;
 import org.zerock.service.BoardServiceTests;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -69,6 +70,19 @@ public class ReplyMapperTests {
 
         List<ReplyVO> replies = mapper.getListWithPaging(cri, bnoArr[0]);
         replies.forEach(reply -> log.info(reply));
+    }
+
+    @Test
+    public void testGetListWithPagingUsingHashmap() {
+        Criteria cri = new Criteria();
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("cri", cri);
+        map.put("bno", bnoArr[0]);
+
+        List<ReplyVO> replies = mapper.getListWithPagingUsingHashMap(map);
+        replies.forEach(reply -> log.info(reply));
+
     }
 
 }
