@@ -23,4 +23,10 @@
         WHERE rno = #{rno};
     </update>
 
+    <select id="getListWithPaging" resultType="org.zerock.domain.ReplyVO">
+        SELECT * FROM reply
+        WHERE bno = #{bno}
+        ORDER BY rno ASC;
+    </select>
+
 </mapper>

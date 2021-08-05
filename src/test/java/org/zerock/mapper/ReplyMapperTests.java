@@ -6,9 +6,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.ReplyVO;
 import org.zerock.service.BoardServiceTests;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -59,6 +61,14 @@ public class ReplyMapperTests {
 
         int count = mapper.update(vo);
         log.info("UPDATE COUNT: " + count);
+    }
+
+    @Test
+    public void testGetListWithPaging() {
+        Criteria cri = new Criteria();
+
+        List<ReplyVO> replies = mapper.getListWithPaging(cri, bnoArr[0]);
+        replies.forEach(reply -> log.info(reply));
     }
 
 }
