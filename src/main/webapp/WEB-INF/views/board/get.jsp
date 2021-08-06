@@ -72,3 +72,44 @@
         });
     })
 </script>
+
+<script type="text/javascript" src="/resources/js/reply.js?v=2"></script>
+<script type="text/javascript">
+
+    console.log("JS TEST");
+    var bnoValue = '<c:out value="${board.no}" />';
+
+    // $(document).ready(function() {
+        replyService.add(
+            {reply:'JS TEST2', replyer:"tester2", bno:bnoValue},
+            function (result) {
+                alert("RESULT: " + result);
+            }
+        )
+    // })
+
+    replyService.getList({ bno: 1, page: 1}, function (list) {
+        for (var i = 0, len = list.length || 0; i < len; i ++) {
+            console.log(list[i])
+        }
+    })
+
+    replyService.remove(18, function(count) {
+        console.log(count);
+
+        if (count === "success") alert("REMOVED");
+    }, function (err) {
+        alert("ERROR ... ");
+    })
+
+    replyService.update(
+        {rno: 20, bno: bnoValue, reply:'JS TEST2'},
+        function (result) {
+            alert("수정 완료 ... ")
+        }
+    )
+
+    replyService.get(20, function (data) {
+        console.log(data);
+    })
+</script>
