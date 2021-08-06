@@ -24,15 +24,21 @@
     </update>
 
     <select id="getListWithPaging" resultType="org.zerock.domain.ReplyVO">
-        SELECT * FROM reply
-        WHERE bno = #{bno}
-        ORDER BY rno ASC;
+        SELECT bno, rno, reply, replyer, replyDate, updateDate
+        FROM reply
+        USE INDEX (idx_reply)
+        WHERE bno = #{bno} AND rno > 0
+        LIMIT #{cri.pageStart}, #{cri.amount};
     </select>
 
     <select id="getListWithPagingUsingHashMap" parameterType="hashmap" resultType="org.zerock.domain.ReplyVO">
         SELECT * FROM reply
         WHERE bno = #{bno}
         ORDER BY rno ASC;
+    </select>
+
+    <select id="getCountByBno" resultType="int">
+        SELECT COUNT(rno) FROM reply WHERE bno = #{bno};
     </select>
 
 </mapper>

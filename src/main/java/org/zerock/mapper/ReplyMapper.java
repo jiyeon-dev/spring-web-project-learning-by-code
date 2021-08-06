@@ -23,4 +23,6 @@ public interface ReplyMapper {
     );
     public List<ReplyVO> getListWithPagingUsingHashMap(HashMap<String, Object> map);  // Hashmap 이용
 
+    public int getCountByBno(Long bno);  // 댓글 총 수
+
 }
