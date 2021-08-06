@@ -1,11 +1,15 @@
 package org.zerock.aop;
 
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Aspect
 @Component
@@ -28,5 +32,28 @@ public class LogAdvice {
     public void logException(Exception exception) {
         log.info("Exception......!!!");
         log.info("exception: " + exception);
+    }
+
+    @Around("execution(* org.zerock.service.SampleService*.*(..))")
+    public Object logTime(ProceedingJoinPoint pjp) {
+        long start = System.currentTimeMillis();
+
+        log.info("Target: " + pjp.getTarget());
+        log.info("Param: " + Arrays.toString(pjp.getArgs()));
+
+        // invoke method
+        Object result = null;
+
+        try {
+            result = pjp.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        long end = System.currentTimeMillis();
+
+        log.info("TIMEL " + (end - start));
+
+        return result;
     }
 }
