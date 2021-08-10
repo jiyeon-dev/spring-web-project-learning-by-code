@@ -126,6 +126,15 @@
             <version>${org.springframework-version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Thumbnailator 썸네일 생성 -->
+        <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.8</version>
+        </dependency>
+
     </dependencies>
 
     <build>
