@@ -41,4 +41,9 @@ public class UploadController {
 
     }
 
+    @GetMapping("/uploadAjax")
+    public void uploadAjax() {
+        log.info("upload ajax");
+    }
+
 }
