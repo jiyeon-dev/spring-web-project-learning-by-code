@@ -9,11 +9,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class UploadController {
 
     private static final Logger log = LoggerFactory.getLogger(UploadController.class);
+
+    private String getFolder() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String str = sdf.format(date);
+        return str.replace("-", File.separator);
+    }
 
     @GetMapping("/uploadForm")
     public void uploadForm() {
@@ -52,6 +61,14 @@ public class UploadController {
 
         String uploadFolder = "C:\\upload";
 
+        // make folder
+        File uploadPath = new File(uploadFolder, getFolder());
+        log.info("upload path: " + uploadPath);
+
+        if (uploadPath.exists() == false) {
+            uploadPath.mkdirs();
+        }
+
         for (MultipartFile multipartFile : uploadFile) {
             log.info("------------------------------------------");
             log.info("Upload File Name: " + multipartFile.getOriginalFilename());
@@ -63,7 +80,8 @@ public class UploadController {
             uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
             log.info("only file name: " + uploadFileName);
 
-            File saveFile = new File(uploadFolder, uploadFileName);
+//            File saveFile = new File(uploadFolder, uploadFileName);
+            File saveFile = new File(uploadPath, uploadFileName);
 
             try {
                 multipartFile.transferTo(saveFile);
