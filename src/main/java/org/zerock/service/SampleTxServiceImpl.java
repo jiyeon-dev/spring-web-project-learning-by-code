@@ -19,6 +19,7 @@ public class SampleTxServiceImpl implements SampleTxService {
     @Autowired
     private Sample2Mapper mapper2;
 
+    @Transactional
     @Override
     public void addData(String value) {
 
