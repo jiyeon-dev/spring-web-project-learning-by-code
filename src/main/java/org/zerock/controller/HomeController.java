@@ -10,7 +10,6 @@ public class HomeController {
 
     @GetMapping("/")
     public void index() {
-        log.info("asdfasfdsafsa");
     }
 
 }
