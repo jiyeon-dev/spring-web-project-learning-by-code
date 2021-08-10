@@ -46,4 +46,32 @@ public class UploadController {
         log.info("upload ajax");
     }
 
+    @PostMapping("/uploadAjaxAction")
+    public void uploadAjaxPost(MultipartFile[] uploadFile) {
+        log.info("update ajax post ............... ");
+
+        String uploadFolder = "C:\\upload";
+
+        for (MultipartFile multipartFile : uploadFile) {
+            log.info("------------------------------------------");
+            log.info("Upload File Name: " + multipartFile.getOriginalFilename());
+            log.info("Upload File Size: " + multipartFile.getSize());
+
+            String uploadFileName = multipartFile.getOriginalFilename();
+
+            // IE has file path
+            uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+            log.info("only file name: " + uploadFileName);
+
+            File saveFile = new File(uploadFolder, uploadFileName);
+
+            try {
+                multipartFile.transferTo(saveFile);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        }
+
+    }
+
 }
