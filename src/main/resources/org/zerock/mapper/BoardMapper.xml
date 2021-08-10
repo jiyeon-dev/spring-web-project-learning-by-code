@@ -33,7 +33,7 @@
 
     <select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
         SELECT
-            no, title, content, writer, regdate, updatedate
+            no, title, content, writer, regdate, updatedate, replycnt
         FROM
             board
         <trim prefix="WHERE" suffixOverrides="AND">
@@ -74,5 +74,9 @@
             <include refid="criteria"></include>
             no > 0
     </select>
+
+    <update id="updateReplyCnt">
+        UPDATE board SET replycnt = replycnt + #{amount} WHERE no = #{no};
+    </update>
 
 </mapper>

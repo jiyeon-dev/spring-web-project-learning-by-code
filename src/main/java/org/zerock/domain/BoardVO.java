@@ -14,6 +14,8 @@ public class BoardVO {
     private Date regdate;
     private Date updateDate;
 
+    private int replyCnt;
+
     public Long getNo() {
         return no;
     }
@@ -60,5 +62,13 @@ public class BoardVO {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public int getReplyCnt() {
+        return replyCnt;
+    }
+
+    public void setReplyCnt(int replyCnt) {
+        this.replyCnt = replyCnt;
     }
 }
