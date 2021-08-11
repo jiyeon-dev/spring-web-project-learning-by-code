@@ -17,6 +17,10 @@ import org.zerock.domain.Criteria;
 import org.zerock.domain.PageDTO;
 import org.zerock.service.BoardService;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -92,11 +96,44 @@ public class BoardController {
 
     }
 
+    /**
+     * 폴더 내 첨부파일(일반파일, 썸네일) 삭제
+     * @param attachList
+     */
+    private void deleteFile(List<BoardAttachVO> attachList) {
+        if (attachList == null || attachList.size() == 0) {
+            return;
+        }
+
+        log.info("delete attach files...............................");
+
+        attachList.forEach(attach -> {
+            try {
+                Path file = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\" + attach.getUuid() + "_" + attach.getFileName());
+                Files.deleteIfExists(file);
+
+                // 이미지인 경우 썸네일 삭제
+                if (Files.probeContentType(file).startsWith("image")) {
+                    Path thumbnail = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\s_" + attach.getUuid() + "_" + attach.getFileName());
+                    Files.delete(thumbnail);
+                }
+            } catch (Exception e) {
+                log.error("delete file error" + e.getMessage());
+            }
+        });
+
+    }
+
     @PostMapping("/remove")
     public String remove(@RequestParam("no") Long no, @ModelAttribute Criteria cri, RedirectAttributes rttr) {
 
         log.info("remove ... " + no);
-        if (service.remove(no)) {
+
+        List<BoardAttachVO> attachList = service.getAttachList(no);  // 게시물 첨부파일 리스트
+
+
+        if (service.remove(no)) {  // 데이터베이스에서 데이터 삭제
+            deleteFile(attachList);  // 폴더 내 이미지, 파일 삭제
             rttr.addFlashAttribute("result", "success");
         }
 

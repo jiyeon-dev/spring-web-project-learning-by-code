@@ -46,10 +46,12 @@ public class BoardServiceImpl implements BoardService {
         System.out.println("modify ....... " + board);
         return mapper.update(board) == 1;
     }
-
+    
+    @Transactional
     @Override
     public boolean remove(Long no) {
         System.out.println("remove ....... " + no);
+        attachMapper.deleteAll(no);  // 첨부파일 삭제
         return mapper.delete(no) == 1;
     }
 
