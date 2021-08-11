@@ -176,18 +176,22 @@ public class UploadController {
          }
 
          String resourceName = resource.getFilename();
+         // uuid 제거
+         String resourceOriginalName = resourceName.substring(resourceName.indexOf("_") + 1);
+        log.info(resourceOriginalName);
+
          HttpHeaders headers = new HttpHeaders();
 
         try {
             String downloadName = resource.getFilename();
             if (userAgent.contains("Trident")) {
                 log.info("IE browser");
-                downloadName = URLEncoder.encode(resourceName, "UTF-8").replaceAll("\\+", " ");
+                downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8").replaceAll("\\+", " ");
             } else if (userAgent.contains("Edge")) {
                 log.info("Edge browser");
-                downloadName = URLEncoder.encode(resourceName, "UTF-8");
+                downloadName = URLEncoder.encode(resourceOriginalName, "UTF-8");
             } else {
-                downloadName = new String(resourceName.getBytes("UTF-8"), "ISO-8859-1");
+                downloadName = new String(resourceOriginalName.getBytes("UTF-8"), "ISO-8859-1");
             }
             headers.add("Content-Disposition", "attachment; filename=" + downloadName);
         } catch (UnsupportedEncodingException e) {
