@@ -1,5 +1,6 @@
 package org.zerock.service;
 
+import org.zerock.domain.BoardAttachVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
 
@@ -19,4 +20,6 @@ public interface BoardService {
     public List<BoardVO> getList(Criteria cri);
 
     public int getTotal(Criteria cri);
+
+    public List<BoardAttachVO> getAttachList(Long no);  // 첨부파일 조회
 }
