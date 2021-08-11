@@ -3,6 +3,7 @@ package org.zerock.domain;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @ToString
 public class BoardVO {
@@ -15,6 +16,8 @@ public class BoardVO {
     private Date updateDate;
 
     private int replyCnt;
+
+    private List<BoardAttachVO> attachList;
 
     public Long getNo() {
         return no;
@@ -70,5 +73,13 @@ public class BoardVO {
 
     public void setReplyCnt(int replyCnt) {
         this.replyCnt = replyCnt;
+    }
+
+    public List<BoardAttachVO> getAttachList() {
+        return attachList;
+    }
+
+    public void setAttachList(List<BoardAttachVO> attachList) {
+        this.attachList = attachList;
     }
 }
