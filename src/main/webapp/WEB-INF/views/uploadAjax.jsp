@@ -65,6 +65,7 @@
                 type: 'POST',
                 success: function (result) {
                     console.log(result);
+                    inputFile.val('');
                 }
             })
         })
