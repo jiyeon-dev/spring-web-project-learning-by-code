@@ -44,7 +44,19 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean modify(BoardVO board) {
         System.out.println("modify ....... " + board);
-        return mapper.update(board) == 1;
+
+        attachMapper.deleteAll(board.getNo());  // 기존 첨부파일 모두 삭제
+        boolean modifyResult = mapper.update(board) == 1;  // 게시글 수정
+
+        // 첨부파일 존재하는 경우 첨부파일 추가
+        if (modifyResult && board.getAttachList() != null && board.getAttachList().size() > 0) {
+            board.getAttachList().forEach(attach -> {
+                attach.setBno(board.getNo());
+                attachMapper.insert(attach);
+            });
+        }
+
+        return modifyResult;
     }
     
     @Transactional
