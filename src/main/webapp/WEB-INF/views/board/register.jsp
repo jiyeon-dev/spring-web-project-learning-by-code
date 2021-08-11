@@ -199,3 +199,5 @@
         });
     });
 </script>
+
+<link href="/resources/css/attach.css" rel="stylesheet">
