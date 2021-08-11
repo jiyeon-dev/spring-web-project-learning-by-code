@@ -20,5 +20,9 @@
         <beans:property name="suffix" value=".jsp" />
     </beans:bean>
 
+    <!-- 파일 업로드 MultipartResolver 빈 등록 -->
+    <beans:bean id="MultipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+    </beans:bean>
+
     <context:component-scan base-package="org.zerock.controller" />
 </beans:beans>
