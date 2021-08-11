@@ -14,6 +14,10 @@
         <ul></ul>
     </div>
 
+    <div class="bigPictureWrapper">
+        <div class="bigPicture"></div>
+    </div>
+
     <button id="uploadBtn">Upload</button>
 
 </body>
@@ -25,6 +29,20 @@
         crossorigin="anonymous"></script>
 
 <script>
+
+    /**
+     * 원본 이미지 보여주는 함수
+     * @param fileCallPath
+     */
+    function showImage(fileCallPath) {
+        // alert(fileCallPath);
+        $(".bigPictureWrapper").css("display", "flex").show();
+
+        $(".bigPicture").html("<img src='/display?fileName=" + encodeURI(fileCallPath) + "'>")
+            .animate({width: '100%', height: '100%'}, 1000);
+
+    }
+
     $(document).ready(function () {
 
         var regex = new RegExp("(.*?)\(exe|sh|zip|alz)$");
@@ -56,7 +74,10 @@
                         + "</a></li>";
                 } else {
                     var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-                    str += "<li><img src='/display?fileName=" + fileCallPath + "'></li>";
+                    var originPath = obj.uploadPath + "\\" + obj.uuid + "_" + obj.fileName;
+                    originPath = originPath.replace(new RegExp(/\\/g), "/");
+
+                    str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\"><img src='/display?fileName=" + fileCallPath + "'></a></li>";
                 }
             });
 
@@ -95,6 +116,15 @@
             })
         })
 
+        /**
+         * 원본 이미지 클릭시 닫는 이벤트
+         */
+        $(".bigPictureWrapper").on("click", function (e) {
+            $(".bigPicture").animate({width: "0%", height: "0%"}, 1000);
+            setTimeout(function () {
+                $(".bigPictureWrapper").hide();
+            }, 1000);
+        });
     });
 </script>
 
@@ -114,10 +144,39 @@
     .uploadResult ul li {
         list-style: none;
         padding: 10px;
+        align-content: center;
+        text-align: center;
         display: flex;
     }
 
     .uploadResult ul li img {
-        width: 20px;
+        width: 100px;
+    }
+
+    .uploadResult ul li span {
+        color: white;
+    }
+
+    .bigPictureWrapper {
+        position: absolute;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        top: 0%;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .bigPicture {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bigPicture img {
+        width: 600px;
     }
 </style>
