@@ -3,6 +3,8 @@ package org.zerock.controller;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zerock.domain.AttachFileDTO;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -160,6 +163,26 @@ public class UploadController {
         }
 
         return result;
+    }
+
+    @GetMapping(value="/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ResponseBody
+    public ResponseEntity<Resource> downloadFile(String fileName) {
+         log.info("download file: " + fileName);
+
+         Resource resource = new FileSystemResource("c:\\upload\\" + fileName);
+         log.info("resource: " + resource);
+
+         String resourceName = resource.getFilename();
+         HttpHeaders headers = new HttpHeaders();
+
+         try {
+             headers.add("Content-Disposition", "attachment; filename=" + new String(resourceName.getBytes(StandardCharsets.UTF_8), "ISO-8859-1"));
+         } catch (UnsupportedEncodingException e) {
+             e.printStackTrace();
+         }
+
+         return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
     }
 
 }
