@@ -3,15 +3,21 @@ package org.zerock.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.zerock.domain.BoardAttachVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.PageDTO;
 import org.zerock.service.BoardService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/board/*")
@@ -95,6 +101,15 @@ public class BoardController {
         }
 
         return "redirect:/board/list" + cri.getListLink();
+
+    }
+
+    @GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<BoardAttachVO>> getAttachList(Long no) {
+
+        log.info("getAttachList " + no);
+        return new ResponseEntity<List<BoardAttachVO>>(service.getAttachList(no), HttpStatus.OK);
 
     }
 

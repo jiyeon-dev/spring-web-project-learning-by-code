@@ -56,6 +56,28 @@
     <!-- /.col-lg-12 -->
 </div>
 
+<!-- row - attach files -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Files</div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="uploadResult">
+                    <ul></ul>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="bigPictureWrapper">
+    <div class="bigPicture"></div>
+</div>
+<!-- /.row - attach files -->
+
 <!-- row - reply -->
 <div class="row">
     <div class="col-lg-12">
@@ -90,6 +112,7 @@
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row - reply -->
+
 
 <!-- Modal - reply -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -302,6 +325,127 @@
                 showList(pageNum);
             });
         });
-
     });
 </script>
+
+<script type="text/javascript">
+    // 첨부파일 관련
+    $(document).ready(function() {
+        (function() {
+            var bno = '<c:out value="${board.no}" />';
+
+            $.getJSON("/board/getAttachList", { no: bno }, function (arr) {
+                console.log(arr);
+
+                var str = "";
+                $(arr).each(function (i, attach) {
+                    if (attach.fileType) {
+                        var fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
+                        str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.image + "'><div>"
+                            + "<img src='/display?fileName=" + fileCallPath + "'>"
+                            + "</div></li>";
+                    } else {
+                        str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.image + "'><div>"
+                            + "<span>" + attach.fileName + "</span>"
+                            + "<img src='/resources/img/attach.png'>"
+                            + "</div></li>";
+                    }
+                });
+                $(".uploadResult ul").html(str);
+
+            });
+        })();
+
+        /**
+         * 첨부파일 클릭 이벤트
+         */
+        $(".uploadResult").on("click", "li", function (e) {
+            console.log("view image");
+
+            var liObj = $(this);
+            var path = encodeURIComponent(liObj.data("path") + "/" + liObj.data("uuid") + "_" + liObj.data("filename"));
+
+            if (liObj.data("type")) {  // 이미지인 경우 -> 원본 이미지 크게 보기
+                showImage(path.replace(new RegExp(/\\/g), "/"));
+            } else {  // 파일 다운로드
+                self.location = "/download?fileName=" + path;
+            }
+        });
+
+        /**
+         * 원본 이미지 보기
+         * @param fileCallPath
+         */
+        function showImage(fileCallPath) {
+            alert(fileCallPath);
+
+            $(".bigPictureWrapper").css("display", "flex").show();
+
+            $(".bigPicture").html("<img src='/display?fileName=" + fileCallPath + "'>")
+                .animate({width: "100%", height: "100%"}, 1000);
+        };
+
+        /**
+         * 원본 이미지 닫기 이벤트
+         */
+        $(".bigPictureWrapper").on("click", function (e) {
+            $(".bigPicture").animate({width: "0%", height: "0%"}, 1000);
+            setTimeout(function (e) {
+                $(".bigPictureWrapper").hide();
+            }, 1000);
+        });
+    });
+</script>
+
+<style>
+    .uploadResult {
+        width: 100%;
+        background-color: gray;
+    }
+
+    .uploadResult ul {
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .uploadResult ul li {
+        list-style: none;
+        padding: 10px;
+        align-content: center;
+        text-align: center;
+        display: flex;
+    }
+
+    .uploadResult ul li img {
+        width: 100px;
+    }
+
+    .uploadResult ul li span {
+        color: white;
+    }
+
+    .bigPictureWrapper {
+        position: absolute;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        top: 0%;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .bigPicture {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bigPicture img {
+        width: 600px;
+    }
+</style>
