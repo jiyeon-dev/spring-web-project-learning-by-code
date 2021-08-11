@@ -110,7 +110,8 @@
                     var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
                     str += "<li><div>"
                         + "<span>" + obj.fileName + "</span>"
-                        + "<button type='button' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>"
+                        + "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-warning btn-circle'>"
+                        + "<i class='fa fa-times'></i></button><br>"
                         + "<img src='/display?fileName=" + fileCallPath + "'>"
                         + "</div></li>";
                 } else {
@@ -119,7 +120,8 @@
 
                     str += "<li><div>"
                         + "<span>" + obj.fileName + "</span>"
-                        + "<button type='button' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>"
+                        + "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-warning btn-circle'>"
+                        + "<i class='fa fa-times'></i></button><br>"
                         + "<img src='/resources/img/attach.png'>"
                         + "</div></li>";
                 }
@@ -154,6 +156,28 @@
             })
         });
 
+        /**
+         * 첨부파일 삭제 이벤트
+         */
+        $(".uploadResult").on("click", "button", function (e) {
+           console.log("delete file");
+
+           var targetFile = $(this).data("file");
+           var type = $(this).data("type");
+
+           var targetLi = $(this).closest("li");
+
+           $.ajax({
+               url: '/deleteFile',
+               data: { fileName: targetFile, type: type },
+               dataType: 'text',
+               type: 'POST',
+               success: function (result) {
+                   alert(result);
+                   targetLi.remove();
+               }
+           });
+        });
 
         var formObj = $("form[role='form']");
         $("button[type='submit']").on("click", function (e) {
