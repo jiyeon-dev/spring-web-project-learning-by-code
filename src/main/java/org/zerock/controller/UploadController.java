@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zerock.domain.AttachFileDTO;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -201,4 +202,28 @@ public class UploadController {
          return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
     }
 
+    @PostMapping(value="/deleteFile")
+    @ResponseBody
+    public ResponseEntity<String> deleteFile(String fileName, String type) {
+        log.info("deleteFile: " + fileName);
+
+        File file;
+        try {
+            file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+            file.delete();
+
+            if (type.equals("image")) {
+                String largeFileName = file.getAbsolutePath().replace("s_", "");
+                log.info("largeFileName: " + largeFileName);
+
+                file = new File(largeFileName);
+                file.delete();
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<String>("deleted", HttpStatus.OK);
+    }
 }
