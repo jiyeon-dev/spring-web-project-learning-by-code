@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <bean id="customAccessDenied" class="org.zerock.security.CustomAccessDeniedHandler"></bean>
     <bean id="customLoginSuccess" class="org.zerock.security.CustomLoginSuccessHandler"></bean>
@@ -27,10 +27,7 @@
 
     <security:authentication-manager>
         <security:authentication-provider>
-            <security:user-service>
-                <security:user name="member" password="{noop}member" authorities="ROLE_MEMBER" />
-                <security:user name="admin" password="{noop}admin" authorities="ROLE_MEMBER, ROLE_ADMIN" />
-            </security:user-service>
+            <security:jdbc-user-service data-source-ref="dataSource" />  <!-- root-context.xml 에 빈 등록됨 -->
         </security:authentication-provider>
     </security:authentication-manager>
 
