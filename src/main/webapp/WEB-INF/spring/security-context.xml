@@ -9,6 +9,7 @@
     <bean id="customLoginSuccess" class="org.zerock.security.CustomLoginSuccessHandler"></bean>
 <!--    <bean id="customPasswordEncoder" class="org.zerock.security.CustomNoOpPasswordEncoder"></bean>-->
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+    <bean id="customUserDetailsService" class="org.zerock.security.CustomUserDetailsService"></bean>
 
     <security:http auto-config="true" use-expressions="true">
         <security:intercept-url pattern="/sample/all" access="permitAll" />
@@ -28,12 +29,12 @@
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider>
-            <security:jdbc-user-service
-                    data-source-ref="dataSource"
-                    users-by-username-query="SELECT userid, userpw, enabled FROM tbl_member WHERE userid = ? "
-                    authorities-by-username-query="SELECT userid, auth FROM tbl_member_auth WHERE userid = ? "
-            />
+        <security:authentication-provider user-service-ref="customUserDetailsService">
+<!--            <security:jdbc-user-service-->
+<!--                    data-source-ref="dataSource"-->
+<!--                    users-by-username-query="SELECT userid, userpw, enabled FROM tbl_member WHERE userid = ? "-->
+<!--                    authorities-by-username-query="SELECT userid, auth FROM tbl_member_auth WHERE userid = ? "-->
+<!--            />-->
 <!--            <security:password-encoder ref="customPasswordEncoder" />-->
             <security:password-encoder ref="bcryptPasswordEncoder" />
         </security:authentication-provider>
