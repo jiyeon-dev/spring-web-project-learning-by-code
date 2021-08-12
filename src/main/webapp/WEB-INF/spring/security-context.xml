@@ -21,11 +21,14 @@
         <security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess"/>
 
         <!-- 로그아웃 -->
-        <security:logout logout-url="/customLogout" invalidate-session="true" />
+        <security:logout logout-url="/customLogout" invalidate-session="true" delete-cookies="remember-me,JSESSIONID"/>
 
         <!-- 접근 제한 403 -->
 <!--        <security:access-denied-handler error-page="/accessError" /> -->
         <security:access-denied-handler ref="customAccessDenied" />
+
+        <!-- 자동 로그인 -->
+        <security:remember-me data-source-ref="dataSource" token-validity-seconds="604800" />
     </security:http>
 
     <security:authentication-manager>

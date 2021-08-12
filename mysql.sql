@@ -45,3 +45,14 @@ CREATE TABLE tbl_member_auth (
 
 SELECT * FROM tbl_member;
 SELECT * FROM tbl_member_auth;
+
+--  Chapter 35
+CREATE TABLE persistent_logins (
+    username   VARCHAR(64) NOT NULL,
+    series     VARCHAR(64) NOT NULL,
+    token      VARCHAR(64) NOT NULL,
+    last_used  TIMESTAMP   NOT NULL,
+    PRIMARY KEY (series)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+SELECT * FROM persistent_logins;
