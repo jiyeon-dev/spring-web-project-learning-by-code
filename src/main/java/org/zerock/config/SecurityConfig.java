@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.zerock.security.CustomLoginSuccessHandler;
 
@@ -27,12 +29,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         log.info("configure..................................");
 
         auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ADMIN");
-        auth.inMemoryAuthentication().withUser("member").password("{noop}member").roles("MEMBER");
+        auth.inMemoryAuthentication().withUser("member").password("$2a$10$ATt/KOfHtXzm.IbdxuAcpeNlJeN5nedl6gw0LFy3wwBON4oDuI3uG").roles("MEMBER");
     }
 
     @Bean
     public AuthenticationSuccessHandler loginSuccessHandler() {
         return new CustomLoginSuccessHandler();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     /**
