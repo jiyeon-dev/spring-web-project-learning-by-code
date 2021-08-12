@@ -17,6 +17,9 @@
 <!--        <security:form-login />-->
         <security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess"/>
 
+        <!-- 로그아웃 -->
+        <security:logout logout-url="/customLogout" invalidate-session="true" />
+
         <!-- 접근 제한 403 -->
 <!--        <security:access-denied-handler error-page="/accessError" /> -->
         <security:access-denied-handler ref="customAccessDenied" />
