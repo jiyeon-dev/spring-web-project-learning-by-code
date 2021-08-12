@@ -29,7 +29,11 @@
 
     <security:authentication-manager>
         <security:authentication-provider>
-            <security:jdbc-user-service data-source-ref="dataSource" />  <!-- root-context.xml 에 빈 등록됨 -->
+            <security:jdbc-user-service
+                    data-source-ref="dataSource"
+                    users-by-username-query="SELECT userid, userpw, enabled FROM tbl_member WHERE userid = ? "
+                    authorities-by-username-query="SELECT userid, auth FROM tbl_member_auth WHERE userid = ? "
+            />
 <!--            <security:password-encoder ref="customPasswordEncoder" />-->
             <security:password-encoder ref="bcryptPasswordEncoder" />
         </security:authentication-provider>
