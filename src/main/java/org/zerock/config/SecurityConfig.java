@@ -9,10 +9,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.zerock.security.CustomLoginSuccessHandler;
+import org.zerock.security.CustomUserDetailsService;
 
 import javax.sql.DataSource;
 
@@ -38,18 +40,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        auth.inMemoryAuthentication().withUser("member").password("$2a$10$ATt/KOfHtXzm.IbdxuAcpeNlJeN5nedl6gw0LFy3wwBON4oDuI3uG").roles("MEMBER");
 //    }
 
+    @Bean
+    public UserDetailsService customUserService() {
+        return new CustomUserDetailsService();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        log.info("configure JDBC ..................................");
-
-        String queryUser = "SELECT userid, userpw, enabled FROM tbl_member WHERE userid = ? ";
-        String queryDetails = "SELECT userid, auth FROM tbl_member_auth WHERE userid = ? ";
-
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery(queryUser)
-                .authoritiesByUsernameQuery(queryDetails);
+        auth.userDetailsService(customUserService()).passwordEncoder(passwordEncoder());
     }
 
     @Bean
