@@ -6,7 +6,7 @@
             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <bean id="customAccessDenied" class="org.zerock.security.CustomAccessDeniedHandler"></bean>
-    <bean id="customLoginSuccess" class="org.zerock.security.CustomLoginSuccessHandler"></bean>
+<!--    <bean id="customLoginSuccess" class="org.zerock.security.CustomLoginSuccessHandler"></bean>-->
     <!--    <bean id="customPasswordEncoder" class="org.zerock.security.CustomNoOpPasswordEncoder"></bean>-->
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
     <bean id="customUserDetailsService" class="org.zerock.security.CustomUserDetailsService"></bean>
@@ -17,8 +17,8 @@
         <security:intercept-url pattern="/sample/admin" access="hasRole('ROLE_ADMIN')" />
 
         <!-- 로그인 페이지 -->
-        <!--        <security:form-login />-->
-        <security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess"/>
+        <security:form-login login-page="/customLogin" />
+<!--        <security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess"/>-->
 
         <!-- 로그아웃 -->
         <security:logout logout-url="/customLogout" invalidate-session="true" delete-cookies="remember-me,JSESSIONID"/>
