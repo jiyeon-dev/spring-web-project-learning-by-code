@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+           http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+
+    <!-- Root Context: defines shared resources visible to all other web components -->
+
+    <!-- spring-jdbc 모듈의 클래스를 이용해서 DataSource 추가 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value ="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+        <property name="url" value="jdbc:log4jdbc:mysql://localhost:3306/mydb?useSSL=false"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="admin"></property>
+    </bean>
+    <!-- SQLSessionFactory : Connection 생성 및 SQL 전달, 결과 리턴 받는 구조 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!-- TransactionManager -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <tx:annotation-driven />
+
+    <!-- mapper -->
+    <mybatis-spring:scan base-package="org.zerock.mapper"></mybatis-spring:scan>
+
+    <context:component-scan base-package="org.zerock.service"></context:component-scan>
+    <context:component-scan base-package="org.zerock.aop"></context:component-scan>
+
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+    <!-- Quartz Annotation -->
+    <context:component-scan base-package="org.zerock.task"></context:component-scan>
+    <task:annotation-driven />
+
+</beans>

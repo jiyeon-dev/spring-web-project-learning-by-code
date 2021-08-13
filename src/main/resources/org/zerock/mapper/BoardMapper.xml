@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.BoardMapper">
+
+    <!-- 공통 SQL 문 -->
+    <sql id="criteria">
+        <trim prefix="(" suffix=") AND" prefixOverrides="OR">
+            <foreach item="type" collection="typeArr">
+                <trim prefix="OR">
+                    <choose>
+                        <when test="type == 'T'.toString()">
+                            title LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="type == 'C'.toString()">
+                            content LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="type == 'W'.toString()">
+                            writer LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                    </choose>
+                </trim>
+            </foreach>
+        </trim>
+    </sql>
+
+    <select id="getList" resultType="org.zerock.domain.BoardVO">
+    <![CDATA[
+        SELECT * FROM board WHERE no > 0;
+    ]]>
+    </select>
+
+    <select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
+        SELECT
+            no, title, content, writer, regdate, updatedate, replycnt
+        FROM
+            board
+        <trim prefix="WHERE" suffixOverrides="AND">
+            <include refid="criteria"></include>
+        </trim>
+        LIMIT #{pageStart}, #{amount};
+    </select>
+
+    <insert id="insert">
+        insert into board (title, content, writer)
+        values (#{title}, #{content}, #{writer})
+    </insert>
+
+    <insert id="insertSelectKey">
+        <selectKey keyProperty="no" order="BEFORE" resultType="long">
+            SELECT MAX(no)+1 FROM board;
+        </selectKey>
+        insert into board (no, title, content, writer)
+        values (#{no}, #{title}, #{content}, #{writer})
+    </insert>
+
+    <select id="read" resultType="org.zerock.domain.BoardVO">
+        SELECT * FROM board WHERE no = #{no};
+    </select>
+
+    <delete id="delete">
+        DELETE FROM board where no = #{no};
+    </delete>
+
+    <update id="update">
+        UPDATE board SET title=#{title}, content=#{content}, writer=#{writer}, updateDate=CURRENT_TIMESTAMP
+        WHERE no=#{no};
+    </update>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT count(*) FROM board
+        WHERE
+            <include refid="criteria"></include>
+            no > 0
+    </select>
+
+    <update id="updateReplyCnt">
+        UPDATE board SET replycnt = replycnt + #{amount} WHERE no = #{no};
+    </update>
+
+</mapper>
