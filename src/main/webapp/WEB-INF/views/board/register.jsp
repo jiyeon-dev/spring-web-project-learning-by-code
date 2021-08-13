@@ -133,6 +133,8 @@
             uploadUL.append(str);
         }
 
+        var csrfHeaderName = "${_csrf.headerName}";
+        var csrfToKenValue = "${_csrf.token}";
         $("input[type='file']").change(function (e) {
             var formData = new FormData();
             var inputFile = $("input[name='uploadFile']");
@@ -149,6 +151,9 @@
                 url: '/uploadAjaxAction',
                 processData: false,
                 contentType: false,
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader(csrfHeaderName, csrfToKenValue);
+                },
                 data: formData,
                 type: 'POST',
                 dataType: 'json',
@@ -173,6 +178,9 @@
            $.ajax({
                url: '/deleteFile',
                data: { fileName: targetFile, type: type },
+               beforeSend: function (xhr) {
+                   xhr.setRequestHeader(csrfHeaderName, csrfToKenValue);
+               },
                dataType: 'text',
                type: 'POST',
                success: function (result) {
