@@ -146,6 +146,9 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        var csrfHeaderName = "${_csrf.headerName}";
+        var csrfToKenValue = "${_csrf.token}";
+
         (function() {
             var bno = '<c:out value="${board.no}" />';
 
@@ -263,6 +266,9 @@
                 url: '/uploadAjaxAction',
                 processData: false,
                 contentType: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(csrfHeaderName, csrfToKenValue);
+                },
                 data: formData,
                 type: 'POST',
                 dataType: 'json',
